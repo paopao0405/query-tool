@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 禁止浏览器缓存 -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>问卷编号查询</title>
+<style>
+*{margin:0;padding:0;font-family:system-ui;box-sizing:border-box}
+body{background:#f5f7fa;padding:40px 15px}
+.card{max-width:520px;margin:0 auto;background:#fff;border-radius:12px;padding:30px;box-shadow:0 1px 10px rgba(0,0,0,0.06)}
+.title{text-align:center;font-size:22px;color:#222;margin-bottom:26px}
+.row{display:flex;gap:10px;margin-bottom:22px}
+#num{flex:1;padding:14px 16px;border:1px solid #e2e8f0;border-radius:8px;font-size:16px;outline:none}
+#num:focus{border-color:#007aff;box-shadow:0 0 0 3px rgba(0,122,255,0.15)}
+#search{padding:14px 20px;background:#007aff;color:#fff;border:0;border-radius:8px;font-size:16px;cursor:pointer}
+#search:active{background:#0066dd}
+.result{padding:18px;border-radius:8px;min-height:70px;font-size:16px;line-height:1.7}
+.success{background:#f0f7ff;color:#0047ab;border:1px solid #cce0ff}
+.error{background:#fff0f0;color:#d63031;border:1px solid #ffd2d2}
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="title">问卷编号查询</div>
+    <div class="row">
+        <input id="num" placeholder="输入编号，例如4356" type="text" autocomplete="off">
+        <button id="search">查询</button>
+    </div>
+    <div id="result"></div>
+</div>
+
+<script>
+// 在这里增删编号和文案
+const answerDB = {
+    "4356":"这份问卷应该填写25岁职场人员，优购买过护肤用的人群",
+    "1001":"18-22岁在校大学生，平价护肤受众",
+    "2111":"30-38岁已婚女性，抗衰需求人群"
+};
+
+const input = document.getElementById('num');
+const btn = document.getElementById('search');
+const resBox = document.getElementById('result');
+
+function doQuery(){
+    let key = input.value.trim();
+    if(answerDB[key]){
+        resBox.className = 'result success';
+        resBox.innerText = answerDB[key];
+    }else{
+        resBox.className = 'result error';
+        resBox.innerText = '无此编号';
+    }
+}
+
+btn.addEventListener('click', doQuery);
+input.addEventListener('keydown', function(e) {
+    if(e.key === 'Enter') {
+        e.preventDefault();
+        doQuery();
+    }
+});
+
+input.readOnly = false;
+input.disabled = false;
+input.addEventListener('focus', function() {
+    this.removeAttribute('readonly');
+    this.removeAttribute('disabled');
+});
+</script>
+</body>
+</html>
